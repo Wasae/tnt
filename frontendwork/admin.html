@@ -1,15 +1,25 @@
 <html>
     <body>
         <div>
-            <button id="addpackagebtn">Add Package</button>
+            <button id="addpackagebtn">Add Package</button>            
+            <!-- <div id="existingpackages">
+                Existing Packages Here
+            </div> -->
             <div id="packageContainer">
                 
-            </div>
+            </div>    
+            <button id="btnsavepackage" style="display: none;">Save</button>
         </div>
-        <script defer src="admin.js"></script>
+
+        <script defer src="scripts/utils/validators.js"></script>
+        <script defer src="scripts/admin.js"></script>
+        <script defer src="scripts/existingpackages.js"></script>
+        <script defer src="scripts/helpers/addpackagehelper.js"></script>
+        <script defer src="scripts/addpackage.js"></script>                
         <script>
             window.onload=function(){
-                adminmodule.conquerpage()
+                LoadInitials.init()
+                LoadInitialPackages.loadPrePackages()
             }
         </script>
     </body>
