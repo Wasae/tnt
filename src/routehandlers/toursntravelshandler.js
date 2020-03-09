@@ -1,30 +1,12 @@
+let fs=require("fs")
+let path=require('path')
+let filepath=path.join(__dirname,'../file','data.json')
 const getAllToursInfo=(req,res)=>{
-    try {
-        let testingarray=[{
-            //image remaining
-            packageid:1,
-            title:"Package 1",
-            price:8500,
-            inclusions:["Inclusion 1","Inclusion 2","Inclusion 3"],
-            accomodation:["accomodation 1","accomodation 2","accomodation 3"],
-            totaldays:3,
-            daydescription:["daydescription 1","daydescription 2","daydescription 3"]
-        },
-        {
-            //image remaining
-            packageid:1,
-            title:"Package 2",
-            price:1000,
-            inclusions:["Inclusion 11","Inclusion 22","Inclusion 33"],
-            accomodation:["accomodation 11","accomodation 22","accomodation 33"],
-            totaldays:3,
-            daydescription:["daydescription 11","daydescription 22","daydescription 33"]
-        }
-    ]    
-    
+    try {         
+        const data=fs.readFileSync(filepath).toString('utf8')
         res.status(200).json({
             resultStatus:true,
-            result:testingarray
+            result:JSON.parse(data)
         })   
     } catch (error) {
         res.status(500).json({
@@ -35,7 +17,21 @@ const getAllToursInfo=(req,res)=>{
 }
 
 const postAllToursInfo=(req,res)=>{
-    res.send(JSON.stringify(req.body))
+    try {
+        if(req.body && req.body.length!=0){
+            let packagejson=JSON.stringify(req.body)
+            fs.writeFileSync(filepath,packagejson)
+            return res.status(200).json({
+                resultstatus:true,
+                resultmessage:"Pacakge Saved Successfully"    
+            })
+        }        
+    } catch (error) {
+        res.status(500).json({
+            resultstatus:false,
+            resultmessage:"Some Error Occurred"
+        })
+    }    
 }
 
 module.exports={

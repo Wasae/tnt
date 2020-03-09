@@ -2,7 +2,7 @@ const LoadInitials=(
     function() {
         let cachedDOM={}
         let urls={
-            endpoint:"localhost:0786//",
+            endpoint:"http://localhost:0786/",
             loadPrePackages:'toursntravels'
         }
         function init(){
@@ -31,16 +31,17 @@ const LoadInitials=(
                     debugger;
                     url.searchParams.append(key,q[key])
                 })
-            }
-            debugger;
+            }            
             return fetch(url)
         }
 
         function makePOSTajax(u,q){
             return fetch(urls.endpoint+u,{
                 method: 'POST',
+                crossDomain: true,
                 headers: {
-                    'Content-Type': 'application/json'                    
+                    'Content-Type': 'application/json',
+                    "postman-token": "d0ac01aa-d9ee-862f-1152-bc56a9786847"
                 },
                 body:JSON.stringify(q)
             })

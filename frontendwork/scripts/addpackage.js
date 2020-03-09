@@ -2,6 +2,9 @@ const AddPackageModule=(
     function(){    
         let deps=packageGenerator
         let  DesiredDOMReference={}
+        let urls={
+            postPackaged:"toursntravels"
+        }
         function getDesiredDOM(){
             let dom=LoadInitials.cacheDOM()
             DesiredDOMReference={
@@ -37,7 +40,7 @@ const AddPackageModule=(
         function SavePackage() {
             let packages=document.getElementById('packageContainer').children
             if (packages && packages.length) {                
-                LoadInitials.makePOSTajax(finalObjectCreation(packages))
+                LoadInitials.makePOSTajax(urls.postPackaged,finalObjectCreation(packages))
                 .then(LoadInitials.getJSON)
                 .then(handleAfterPackageSave)
             }
