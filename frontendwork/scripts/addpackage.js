@@ -37,7 +37,7 @@ const AddPackageModule=(
         function SavePackage() {
             let packages=document.getElementById('packageContainer').children
             if (packages && packages.length) {                
-                LoadInitials.makePOSTajax(finalObjectCreation())
+                LoadInitials.makePOSTajax(finalObjectCreation(packages))
                 .then(LoadInitials.getJSON)
                 .then(handleAfterPackageSave)
             }
@@ -47,7 +47,7 @@ const AddPackageModule=(
             }
         }
 
-        function finalObjectCreation(params) {
+        function finalObjectCreation(packages) {
             let finalobject=[]
             for (let i = 0; i < packages.length; i++) {
                 const element = packages[i];
