@@ -9,14 +9,32 @@ const AddPackageModule=(
             let dom=LoadInitials.cacheDOM()
             DesiredDOMReference={
                 packageContainer:dom.packageContainer,
-                btnsavepackage:dom.btnsavepackage
+                btnsavepackage:dom.btnsavepackage,
+                existingpackages:dom.existingpackages,
+                btnBack:dom.btnBack,
+                btnsavepackage:btnsavepackage
             }
         }
 
+        function BackClicked() {
+            //dirt here 
+            DesiredDOMReference.btnBack.style.display="none"
+            DesiredDOMReference.packageContainer.innerHTML=""
+            //dirt here ends
+            LoadInitialPackages.loadPrePackages()
+        }
+
         function addPackage(){
-            getDesiredDOM()                      
-            appendPackageHTML(newPackagehtmlgenerator())
-            SavingButtonCriteria()
+            getDesiredDOM()   
+            if(DesiredDOMReference.packageContainer.children.length==0){
+                //dirt here
+                DesiredDOMReference.existingpackages.style.display="none"
+                DesiredDOMReference.btnsavepackage.style.display=""
+                DesiredDOMReference.btnBack.style.display=""                
+                //dirt here ends
+                appendPackageHTML(newPackagehtmlgenerator())                
+            }
+            SavingButtonCriteria()            
         }
 
         function newPackagehtmlgenerator(){
@@ -24,6 +42,7 @@ const AddPackageModule=(
         }
 
         function appendPackageHTML(html){
+            DesiredDOMReference.packageContainer.style.display=""
             DesiredDOMReference.packageContainer.innerHTML+=html            
             DynamicEventBinder()
         }
@@ -38,11 +57,21 @@ const AddPackageModule=(
         }
 
         function SavePackage() {
-            let packages=document.getElementById('packageContainer').children
+            let packages=DesiredDOMReference.packageContainer.children
             if (packages && packages.length) {                
                 LoadInitials.makePOSTajax(urls.postPackaged,finalObjectCreation(packages))
                 .then(LoadInitials.getJSON)
                 .then(handleAfterPackageSave)
+                .catch(function(e) {
+                    LoadInitialPackages.loadPrePackages()
+                    // dirt here
+                    DesiredDOMReference.existingpackages.style.display=""
+                    DesiredDOMReference.packageContainer.innerHTML=""
+                    DesiredDOMReference.packageContainer.style.display="none"
+                    DesiredDOMReference.btnBack.style.display="none"
+                    // dirt here ends
+                    alert("Error Saving Package, Please try again")
+                })
             }
             else{
                 alert("No Package found to be deleted")
@@ -107,7 +136,18 @@ const AddPackageModule=(
 
         function handleAfterPackageSave(d) {
             console.log('Packages Saved')
+            // dirt here
+            DesiredDOMReference.existingpackages.style.display=""
+            DesiredDOMReference.packageContainer.innerHTML=""
+            DesiredDOMReference.packageContainer.style.display="none"
+            DesiredDOMReference.btnBack.style.display="none"            
+            // dirt here ends
+
+            alert("Package Saved Successfully")
+            LoadInitialPackages.loadPrePackages()
         }
+
+
         //this is Dirty stuff ,will try to clean it
         function DynamicEventBinder(params) {
             let classes=[{
@@ -158,13 +198,13 @@ const AddPackageModule=(
             return
         }
 
-        function addaccomodation() {
-            this.previousElementSibling.innerHTML+=deps.addaccomodation()
+        function addaccomodation() {                        
+            getDOM(deps.addaccomodation(),this.previousElementSibling)
             DynamicEventBinder()
         }
 
-        function addinclusion() {
-            this.previousElementSibling.innerHTML+=deps.addinclusion()
+        function addinclusion() {            
+           getDOM(deps.addinclusion(), this.previousElementSibling)
             DynamicEventBinder()
         }
 
@@ -172,14 +212,20 @@ const AddPackageModule=(
             this.closest('div').remove()
         }
 
-        function addday() {
-            this.previousElementSibling.innerHTML+=deps.addday()
+        function addday() {                       
+            getDOM(deps.addday(),this.previousElementSibling)
             DynamicEventBinder()
+        }
+
+        function getDOM(str,d) {
+            var doc = new DOMParser().parseFromString(str, "text/html");            
+            d.appendChild(doc.body.firstElementChild)
         }
 
         return {
             addPackage:addPackage,
-            SavePackage:SavePackage
+            SavePackage:SavePackage,
+            BackClicked:BackClicked
         }
     }()
 )

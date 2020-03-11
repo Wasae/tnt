@@ -15,13 +15,15 @@ const LoadInitials=(
                 addpackagebtn:document.getElementById('addpackagebtn'),
                 packageContainer:document.getElementById('packageContainer'),
                 existingpackages:document.getElementById('existingpackages'),
-                btnsavepackage:document.getElementById('btnsavepackage')
+                btnsavepackage:document.getElementById('btnsavepackage'),
+                btnBack:document.getElementById('btnBack')
             }
         }
 
         function cachedDOMEventBinder(){
             cachedDOM.addpackagebtn.addEventListener('click',AddPackageModule.addPackage.bind(this))
             cachedDOM.btnsavepackage.addEventListener('click',AddPackageModule.SavePackage.bind(this))
+            cachedDOM.btnBack.addEventListener('click',AddPackageModule.BackClicked.bind(this))
         }
 
         function makeGETajax(u,q) {            

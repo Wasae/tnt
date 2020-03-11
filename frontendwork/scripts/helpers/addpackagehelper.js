@@ -15,7 +15,7 @@ const packageGenerator=(
             packageHTML+="<tr><td>Accomodations : </td><td><fieldset><div id='pkgaccomodations_"+pkgid+"'>"+getAccomodationControls()+"</div><button class='addaccomodation'>+</button></fieldset></td></tr>"
             packageHTML+="<tr><td>Daywise Description : </td><td><fieldset><div id='pkgdaywisedescription_"+pkgid+"'>"+getPackageDayWiseDescriptionControls()+"</div><button class='addday'>+</button></fieldset></td></tr>"
             packageHTML+="</tbody></table>"
-            packageHTML+="<button class='removePackage'>Remove</button>"
+            //packageHTML+="<button class='removePackage'>Remove</button>"
             packageHTML+="</fieldset>"
             return packageHTML
         }

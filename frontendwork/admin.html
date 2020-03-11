@@ -1,10 +1,11 @@
 <html>
     <body>
         <div>
-            <button id="addpackagebtn">Add Package</button>            
-            <!-- <div id="existingpackages">
+            <button id="addpackagebtn">Add Package</button>   
+            <button id="btnBack" style="display: none;"> Back</button>         
+            <div id="existingpackages">
                 Existing Packages Here
-            </div> -->
+            </div>
             <div id="packageContainer">
                 
             </div>    
@@ -13,9 +14,11 @@
 
         <script defer src="scripts/utils/validators.js"></script>
         <script defer src="scripts/admin.js"></script>
-        <script defer src="scripts/existingpackages.js"></script>
-        <script defer src="scripts/helpers/addpackagehelper.js"></script>
-        <script defer src="scripts/addpackage.js"></script>                
+        <script defer src="scripts/helpers/existingpackagehelper.js"></script>
+        <script defer src="scripts/helpers/addpackagehelper.js"></script>        
+        <script defer src="scripts/existingpackages.js"></script>        
+        <script defer src="scripts/addpackage.js"></script> 
+            
         <script>
             window.onload=function(){
                 LoadInitials.init()
