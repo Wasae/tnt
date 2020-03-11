@@ -68,8 +68,43 @@ const getPackageById=(req,res)=>{
     }
 }
 
+const deletePackageByid=(req,res)=>{
+    try {
+        if(req.query.id){
+            res.json(400).json({
+                resultstatus:false,
+                result:'invlaid id'    
+            })
+        }
+        let data=fs.readFileSync(filepath).toString('utf8')
+        data =JSON.parse(data) || []
+        if(data){            
+            let package=data.find((pkg)=>{return pkg.packageid ==req.query.id})
+            if (package) {
+                let ix=data.indexOf(package)
+                data.splice(ix,1)
+                let filedata=JSON.stringify(data)  || []
+                fs.writeFileSync(filepath,filedata)
+                res.status(200).json({
+                    resultstatus:true,
+                    result:"Package deleted"        
+                })
+            }
+        }
+        res.status(200).json({
+            resultstatus:false,
+            result:"Package not found"
+        })         
+    } catch (error) {
+        res.status(200).json({
+            resultstatus:false,
+            result:error
+        })         
+    }  
+}
 module.exports={
     getPackages:getAllToursInfo,
     postPackages:postAllToursInfo,
-    getPackageById:getPackageById
+    getPackageById:getPackageById,
+    deletePackageByid:deletePackageByid
 }
