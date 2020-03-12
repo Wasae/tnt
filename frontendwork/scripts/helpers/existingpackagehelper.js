@@ -63,7 +63,7 @@ const packageGenerator=(
             return "<div><input type='text' data-package-accomodations='packageAccomodations'/><button class='removeinc'>-</button><br></div>"
         }
 
-        function getPackageDayWiseDescriptionControls(params) {
+        function getPackageDayWiseDescriptionControls(params,val) {
             if (val && val.length!=0) {
                 let html=""
                 html+=val.map(function(d) {
