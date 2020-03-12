@@ -1,84 +1,75 @@
-const packageGenerator=(
-    function(){
-        function PackageHtml(params) {
-            return packageFormer(params)
-        }
+let existingPackageHelper=(function() {
+    let tabletagsHelper={
+        openingTD:"<td>",
+        closingTD:"</td>",
+        openingTR:"<tr>",
+        closingTR:"</tr>",
+        openingTH:"<th>",
+        closingTH:"</th>",
+        openingTable:"<table>",
+        closingTable:"</table>",
+        openingTableHeader:"<thead>",
+        closingTableHeader:"</thead>",
+        openingTableBody:"<thead>",
+        closingTableBody:"</thead>",
+    }
 
-        function packageFormer(params) {            
-            let pkgid=params && params.PackageId?params.PackageId: create_UUID()
-            let packageHTML="<fieldset id='"+pkgid+"'>"        
-            packageHTML+="<table><tbody>"
-            packageHTML+="<tr><td>Display Image : </td><td>"+getFileUploadControl(pkgid)+"</td></tr>"
-            packageHTML+="<tr><td>Title : </td><td>"+getPackageTitleControls(pkgid,params.title)+"</td></tr>"
-            packageHTML+="<tr><td>Price : </td><td>"+getPackagePriceControls(pkgid,params.price)+"</td></tr>"
-            packageHTML+="<tr><td>Inclusions : </td><td><fieldset><div id='pkginclusion_"+pkgid+"'>"+getPackageInclusionControls(params.inclusion)+"</div><button class='addinclusion'>+</button></fieldset></td></tr>"
-            packageHTML+="<tr><td>Accomodations : </td><td><fieldset><div id='pkgaccomodations_"+pkgid+"'>"+getAccomodationControls(params.accomodations)+"</div><button class='addaccomodation'>+</button></fieldset></td></tr>"
-            packageHTML+="<tr><td>Daywise Description : </td><td><fieldset><div id='pkgdaywisedescription_"+pkgid+"'>"+getPackageDayWiseDescriptionControls(params.daydescription)+"</div><button class='addday'>+</button></fieldset></td></tr>"
-            packageHTML+="</tbody></table>"
-            //packageHTML+="<button class='removePackage'>Remove</button>"
-            packageHTML+="</fieldset>"
-            return packageHTML
-        }
-
-        function getFileUploadControl(params,val) {
-            if (val) {
-                return "<input type='file' id='pkgfileupload_"+params+"' value='"+val+"'/>"
-            } 
-            return "<input type='file' id='pkgfileupload_"+params+"'/>"                       
-        }
-
-        function getPackageTitleControls(params,val) {
-            if (val) {
-                return "<input type='text' data-package-title='packageTitle' id='pkgtitle_"+params+"' value='"+val+"'/>"
+    function init(data,columns,dataprops) {
+        try {
+            if (columns && columns.length!=0 && dataprops && dataprops.length!=0) {
+                return TableGenerator(data,columns,dataprops)    
             }
-            return "<input type='text' data-package-title='packageTitle' id='pkgtitle_"+params+"'/>"
-        }
+            else{
+                console.log("Headers or Data Property is missing")
+            }            
+        } catch (error) {
+            console.log(error)
+        }        
+        return
+    }
 
-        function getPackagePriceControls(params,val) {
-            if (val) {
-                return "<input type='text' data-package-price='packagePrice' id='pkgprice_"+params+"' value='"+val+"'/>"
-            } 
-            return "<input type='text' data-package-price='packagePrice' id='pkgprice_"+params+"'/>"
-        }
+    function FormTablHeader(ths) {
+        let trth=""
+        if (ths && ths.length!=0) {
+            trth+=ths.map(function(d){
+                return tabletagsHelper.openingTH+d+tabletagsHelper.closingTH
+            }).join('')
+        } 
+        return trth
+    }
 
-        function getPackageInclusionControls(params,val) {
-            if (val && val.length!=0) {
-                let html=""
-                html+=val.map(function(d) {
-                            return "<div><input type='text' data-package-inclusions='packageInclusions' value='"+d+"'/><button class='removeinc'>-</button><br></div>"
-                      }).join('')
-                return html
-            }
-            return "<div><input type='text' data-package-inclusions='packageInclusions'/><button class='removeinc'>-</button><br></div>"
+    function FormTableRow(trs,dataprops) {
+        let trtd=""
+        if (trs && trs.length!=0) {
+            trtd+=trs.map(function(d){
+                let rowhtml=tabletagsHelper.openingTR
+                rowhtml+=dataprops.map(function(a){
+                            return tabletagsHelper.openingTD+d[a]+tabletagsHelper.closingTD
+                         }).join('')   
+                rowhtml+=tabletagsHelper.openingTD+"<button class='tbleditbtn' data-pkgid='"+d[dataprops[0]]+"'>Edit</button>"+tabletagsHelper.closingTD
+                rowhtml+=tabletagsHelper.openingTD+"<button class='tbldeletebtn' data-pkgid='"+d[dataprops[0]]+"'>Delete</button>"+tabletagsHelper.closingTD
+                return rowhtml+=tabletagsHelper.closingTR
+            }).join('')
         }
+        return trtd
+    }
 
-        function getAccomodationControls(params,val) {
-            if (val && val.length!=0) {
-                let html=""
-                html+=val.map(function(d) {
-                            return "<div><input type='text' data-package-accomodations='packageAccomodations' value='"+d+"'/><button class='removeinc'>-</button><br></div>"
-                      }).join('')
-                return html
-            }
-            return "<div><input type='text' data-package-accomodations='packageAccomodations'/><button class='removeinc'>-</button><br></div>"
-        }
-
-        function getPackageDayWiseDescriptionControls(params,val) {
-            if (val && val.length!=0) {
-                let html=""
-                html+=val.map(function(d) {
-                            return "<div><textarea placeholder='Day Description' value='"+d+"'></textarea><button class='removeinc'>-</button></div>"
-                      }).join('')
-                return html
-            }
-            return "<div><textarea placeholder='Day Description'></textarea><button class='removeinc'>-</button></div>"
-        }
-
-        return{
-            getNewPackageHTML:PackageHtml,
-            addinclusion: getPackageInclusionControls,
-            addaccomodation:getAccomodationControls,
-            addday:getPackageDayWiseDescriptionControls
-        }
-    }()
-)
+    function TableGenerator(params,columns,dataprops) {
+        let tableHTML=""
+        tableHTML+=tabletagsHelper.openingTable        
+        tableHTML+=tabletagsHelper.openingTableHeader
+        tableHTML+=tabletagsHelper.openingTR        
+        tableHTML+=FormTablHeader(columns)
+        tableHTML+=tabletagsHelper.closingTR
+        tableHTML+=tabletagsHelper.closingTableHeader
+        tableHTML+=tabletagsHelper.openingTableBody
+        tableHTML+=FormTableRow(params,dataprops)
+        tableHTML+=tabletagsHelper.closingTableBody
+        tableHTML+=tabletagsHelper.closingTable
+        return tableHTML
+    }
+    
+    return {
+        init:init
+    } 
+}())
