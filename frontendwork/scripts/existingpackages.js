@@ -44,15 +44,18 @@
             }            
         }
 
-        function editPackage() {
-            debugger;
+        function editPackage() {           
             let target=event.target
             if(target.hasAttribute("data-pkgid")){
                 let pkgid=target.attributes["data-pkgid"].value
-                //getPackageForThisId
-
+                LoadInitials.makeGETajax('toursntravels?id='+pkgid)
+                .then(LoadInitials.getJSON)
+                .then(EditPackage)
             }
-            console.log(event)
+        }
+     
+        function EditPackage(d) {
+            AddPackageModule.addPackage(d)
         }
 
         function deletePackage() {
