@@ -5,6 +5,6 @@ const toursntravelhandlers=require('../routehandlers/toursntravelshandler')
 router.get('/',toursntravelhandlers.getPackages)
 router.post('/',toursntravelhandlers.postPackages)
 router.get('/:id',toursntravelhandlers.getPackageById)
-router.delete('/:id',toursntravelhandlers.deletePackageByid)
+router.delete('/',toursntravelhandlers.deletePackageByid)
 
 module.exports=router

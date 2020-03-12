@@ -24,7 +24,7 @@ const AddPackageModule=(
             LoadInitialPackages.loadPrePackages()
         }
 
-        function addPackage(){
+        function addPackage(d){
             getDesiredDOM()   
             if(DesiredDOMReference.packageContainer.children.length==0){
                 //dirt here
@@ -32,13 +32,19 @@ const AddPackageModule=(
                 DesiredDOMReference.btnsavepackage.style.display=""
                 DesiredDOMReference.btnBack.style.display=""                
                 //dirt here ends
-                appendPackageHTML(newPackagehtmlgenerator())                
+                if (d) {
+                    appendPackageHTML(newPackagehtmlgenerator(d))    
+                }
+                else{
+                    appendPackageHTML(newPackagehtmlgenerator())    
+                }
+                
             }
             SavingButtonCriteria()            
         }
 
-        function newPackagehtmlgenerator(){
-            return deps.getNewPackageHTML()
+        function newPackagehtmlgenerator(d){            
+            return deps.getNewPackageHTML(d)
         }
 
         function appendPackageHTML(html){
@@ -69,6 +75,7 @@ const AddPackageModule=(
                     DesiredDOMReference.packageContainer.innerHTML=""
                     DesiredDOMReference.packageContainer.style.display="none"
                     DesiredDOMReference.btnBack.style.display="none"
+                    DesiredDOMReference.btnsavepackage.style.display="none"
                     // dirt here ends
                     alert("Error Saving Package, Please try again")
                 })
@@ -131,20 +138,26 @@ const AddPackageModule=(
                      daydescription:daydescription
                  })                                   
             }
+            console.log(finalobject)
             return finalobject
         }
 
         function handleAfterPackageSave(d) {
-            console.log('Packages Saved')
-            // dirt here
-            DesiredDOMReference.existingpackages.style.display=""
-            DesiredDOMReference.packageContainer.innerHTML=""
-            DesiredDOMReference.packageContainer.style.display="none"
-            DesiredDOMReference.btnBack.style.display="none"            
-            // dirt here ends
-
-            alert("Package Saved Successfully")
-            LoadInitialPackages.loadPrePackages()
+            if(d.resultstatus){
+                console.log('Packages Saved')
+                // dirt here
+                DesiredDOMReference.existingpackages.style.display=""
+                DesiredDOMReference.packageContainer.innerHTML=""
+                DesiredDOMReference.packageContainer.style.display="none"
+                DesiredDOMReference.btnBack.style.display="none"            
+                // dirt here ends
+    
+                alert("Package Saved Successfully")
+                LoadInitialPackages.loadPrePackages()
+                return 
+            }
+            alert("Error Adding Package, Please try again later")
+            
         }
 
 

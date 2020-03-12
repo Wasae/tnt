@@ -9,6 +9,7 @@ let cors=require('cors')
 app.use(bodyparser.urlencoded({extended:false}))
 app.use(bodyparser.json({limit:'5mb'}))
 app.use(cors())
+
 app.use('/toursntravels',toursntravels)
 
 module.exports=app

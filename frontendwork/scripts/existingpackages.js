@@ -1,8 +1,7 @@
  const LoadInitialPackages=(
     function(){
         let deps=LoadInitials
-        let DesiredDOMReference
-        let urls
+        let DesiredDOMReference        
 
         function getModuleNeeds(){
             DesiredDOMReference=LoadInitials.cacheDOM()
@@ -15,15 +14,9 @@
         }
 
         function getPrePackages(params) {        
-            // deps.makeGETajax(urls,{"name":"wasae"})
-            // .then(deps.getJSON)
-            // .then(handlePreLoadedPackaged)
-            let d=[
-                {"srno":1,"title":"Package 1","price":"1000"},
-                {"srno":2,"title":"Package 2","price":"2000"},
-                {"srno":3,"title":"Package 3","price":"3000"}
-            ]
-            handlePreLoadedPackaged(d)
+            deps.makeGETajax('toursntravels')
+            .then(deps.getJSON)
+            .then(handlePreLoadedPackaged)            
         }
 
         function BindGeneratedTableEvents() {
@@ -44,36 +37,51 @@
             }            
         }
 
-        function editPackage() {           
+        function editPackage() {                   
             let target=event.target
-            if(target.hasAttribute("data-pkgid")){
+            if(target.hasAttribute("data-pkgid")){                
                 let pkgid=target.attributes["data-pkgid"].value
-                LoadInitials.makeGETajax('toursntravels?id='+pkgid)
-                .then(LoadInitials.getJSON)
-                .then(EditPackage)
+                if (pkgid) {
+                    LoadInitials.makeGETajax('toursntravels/'+pkgid)
+                    .then(LoadInitials.getJSON)
+                    .then(EditPackage)   
+                }
             }
         }
      
-        function EditPackage(d) {
-            AddPackageModule.addPackage(d)
+        function EditPackage(d) {            
+            if (d.resultstatus) {
+                alert("Package Modified Successfully")
+                AddPackageModule.addPackage(d.result)   
+                return
+            }            
+            alert("Error Modifying Package, Please try again later")
+            return
         }
 
         function deletePackage() {
             let target=event.target
             if(target.hasAttribute("data-pkgid")){
                 let pkgid=target.attributes["data-pkgid"].value
-                let a=confirm("do you want to delete this package .. ?")
-                if(a){
-                //ajax for delete
-                //LoadInitials.makeGETajax()
-                //.then(LoadInitials.getJSON)
-                //.json(DeletePacakage)
+                if (pkgid) {                    
+                    if(confirm("do you want to delete this package .. ?")){
+                        //ajax for delete
+                        LoadInitials.makeDELETEajax('toursntravels',{"id":pkgid})
+                        .then(LoadInitials.getJSON)
+                        .then(DeletePacakage)   
+                    }
                 }
             }
         }
 
-        function DeletePacakage() {
-            getPrePackages()
+        function DeletePacakage(d) {
+            if (d.resultstatus) {
+                alert("Deleted Successfully")
+                getPrePackages()
+                return
+            }
+            alert("Error Deleting, Please try again later")
+            return
         }
 
         function PacakgeEventBinders(params) {
@@ -85,23 +93,25 @@
             }
         }
         function handlePreLoadedPackaged(d) {
-            // dirt here
-            DesiredDOMReference.existingpackages.style.display=""
-            DesiredDOMReference.packageContainer.style.display="none"
-            DesiredDOMReference.btnsavepackage.style.display="none"
-            //dirt here ends
-
-            let html=""
-            let columns=["#","Title","Price","Edit","Delete"]
-            let dataprops=["srno","title","price"]  
-            if (d && d.length!=0) {
-                html=existingPackageHelper.init(d,columns,dataprops)  
-                DesiredDOMReference.existingpackages.innerHTML=html 
-                BindGeneratedTableEvents()
-            }
-            else{
-                DesiredDOMReference.existingpackages.innerHTML="No Packages Found"
-            }            
+            if(d.resultStatus){                
+                // dirt here
+                DesiredDOMReference.existingpackages.style.display=""
+                DesiredDOMReference.packageContainer.style.display="none"
+                DesiredDOMReference.btnsavepackage.style.display="none"
+                //dirt here ends
+    
+                let html=""
+                let columns=["#","Title","Price","Edit","Delete"]
+                let dataprops=["packageid","title","price"]  
+                if (d.result && d.result.length!=0) {                    
+                    html=existingPackageHelper.init(d.result,columns,dataprops)  
+                    DesiredDOMReference.existingpackages.innerHTML=html 
+                    BindGeneratedTableEvents()
+                }
+                else{
+                    DesiredDOMReference.existingpackages.innerHTML="No Packages Found"
+                }
+            }                                    
         }
 
         return {

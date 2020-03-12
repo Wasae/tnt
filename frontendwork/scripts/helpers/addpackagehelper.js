@@ -5,11 +5,11 @@ const packageGenerator=(
         }
 
        function packageFormer(params) {            
-            let pkgid=params && params.PackageId?params.PackageId: create_UUID(),
+            let pkgid=params && params.packageid?params.packageid: create_UUID(),
             title=params && params.title?params.title:undefined,
             price=params && params.price?params.price:undefined,
-            inclusion=params && params.inclusion?params.inclusion:undefined,
-            accomodation=params && params.accomodations?params.accomodations:undefined,
+            inclusion=params && params.inclusions?params.inclusions:undefined,
+            accomodation=params && params.accomodation?params.accomodation:undefined,
             daydesc=params && params.daydescription?params.daydescription:undefined
 
             let packageHTML="<fieldset id='"+pkgid+"'>"        
@@ -47,7 +47,7 @@ const packageGenerator=(
             return "<input type='text' data-package-price='packagePrice' id='pkgprice_"+params+"'/>"
         }
 
-        function getPackageInclusionControls(params,val) {
+        function getPackageInclusionControls(val) {
             if (val && val.length!=0) {
                 let html=""
                 html+=val.map(function(d) {
@@ -58,7 +58,7 @@ const packageGenerator=(
             return "<div><input type='text' data-package-inclusions='packageInclusions'/><button class='removeinc'>-</button><br></div>"
         }
 
-        function getAccomodationControls(params,val) {
+        function getAccomodationControls(val) {
             if (val && val.length!=0) {
                 let html=""
                 html+=val.map(function(d) {
@@ -69,11 +69,11 @@ const packageGenerator=(
             return "<div><input type='text' data-package-accomodations='packageAccomodations'/><button class='removeinc'>-</button><br></div>"
         }
 
-        function getPackageDayWiseDescriptionControls(params,val) {
+        function getPackageDayWiseDescriptionControls(val) {
             if (val && val.length!=0) {
                 let html=""
                 html+=val.map(function(d) {
-                            return "<div><textarea placeholder='Day Description' value='"+d+"'></textarea><button class='removeinc'>-</button></div>"
+                            return "<div><textarea placeholder='Day Description' >"+d+"</textarea><button class='removeinc'>-</button></div>"
                       }).join('')
                 return html
             }

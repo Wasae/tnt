@@ -49,6 +49,17 @@ const LoadInitials=(
             })
         }
 
+        function makeDELETEajax(u,q) {
+            return fetch(urls.endpoint+u,{
+                method: 'DELETE',
+                crossDomain: true,
+                headers: {
+                    'Content-Type': 'application/json',
+                    "postman-token": "d0ac01aa-d9ee-862f-1152-bc56a9786847"
+                },
+                body:JSON.stringify(q)
+            })
+        }
         function getJSON(res) {
             return res.json()
         }
@@ -65,7 +76,8 @@ const LoadInitials=(
             makeGETajax:makeGETajax,
             makePOSTajax:makePOSTajax,
             getJSON:getJSON,
-            init:init
+            init:init,
+            makeDELETEajax:makeDELETEajax
         }
     }()
 )

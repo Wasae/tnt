@@ -19,9 +19,20 @@ const getAllToursInfo=(req,res)=>{
 const postAllToursInfo=(req,res)=>{
     try {
         if(req.body && req.body.length!=0){
-            const data=fs.readFileSync(filepath).toString('utf8')
+            let body=req.body[0]
+            let data=fs.readFileSync(filepath).toString('utf8')
             data=JSON.parse(data) || []
-            data.push(req.body)
+            let finder=data.find((x)=>x.packageid == body.packageid)
+            if(finder){
+                let ix=data.indexOf(finder)
+                if(ix!=-1){
+                    data[ix]=body
+                }
+            }
+            else{
+                data.push(body)
+            }
+            
             let packagejson=JSON.stringify(data)
             fs.writeFileSync(filepath,packagejson)
             return res.status(200).json({
@@ -39,7 +50,8 @@ const postAllToursInfo=(req,res)=>{
 
 const getPackageById=(req,res)=>{
     try {
-        if(req.query.id){
+        let id =req.params.id
+        if(!id){
             res.json(400).json({
                 resultstatus:false,
                 result:'invlaid id'    
@@ -48,7 +60,7 @@ const getPackageById=(req,res)=>{
         let data=fs.readFileSync(filepath).toString('utf8')
         data =JSON.parse(data) || []
         if(data){            
-            let package=data.find((pkg)=>{return pkg.packageid ==req.query.id})
+            let package=data.find((pkg)=>{return pkg.packageid ==id})
             if (package) {
                 res.status(200).json({
                     resultstatus:true,
@@ -56,10 +68,12 @@ const getPackageById=(req,res)=>{
                 })
             }
         }
-        res.status(200).json({
-            resultstatus:false,
-            result:"Package not found"
-        })        
+        else{
+            res.status(200).json({
+                resultstatus:false,
+                result:"Package not found"
+            })       
+        }
     }catch (error) {
         res.status(500).json({
             resultstatus:false,
@@ -70,31 +84,44 @@ const getPackageById=(req,res)=>{
 
 const deletePackageByid=(req,res)=>{
     try {
-        if(req.query.id){
+        const id=req.body.id
+        if(!id){
             res.json(400).json({
                 resultstatus:false,
                 result:'invlaid id'    
             })
         }
-        let data=fs.readFileSync(filepath).toString('utf8')
-        data =JSON.parse(data) || []
-        if(data){            
-            let package=data.find((pkg)=>{return pkg.packageid ==req.query.id})
-            if (package) {
-                let ix=data.indexOf(package)
-                data.splice(ix,1)
-                let filedata=JSON.stringify(data)  || []
-                fs.writeFileSync(filepath,filedata)
-                res.status(200).json({
-                    resultstatus:true,
-                    result:"Package deleted"        
-                })
+        else{
+            let data=fs.readFileSync(filepath).toString('utf8')
+            data =JSON.parse(data) || []
+            if(data){            
+                let package=data.find((pkg)=>{return pkg.packageid ==id})
+                if (package) {
+                    let ix=data.indexOf(package)
+                    if(ix!=-1){
+                        data.splice(ix,1)
+                        let filedata=JSON.stringify(data)  || []
+                        fs.writeFileSync(filepath,filedata)
+                        res.status(200).json({
+                            resultstatus:true,
+                            result:"Package deleted"        
+                        })
+                    }
+                    else{
+                        res.status(200).json({
+                            resultstatus:false,
+                            result:"Package not found"
+                        })        
+                    }
+                }
             }
-        }
-        res.status(200).json({
-            resultstatus:false,
-            result:"Package not found"
-        })         
+            else{
+                res.status(200).json({
+                    resultstatus:false,
+                    result:"Package not found"
+                })        
+            }
+        } 
     } catch (error) {
         res.status(200).json({
             resultstatus:false,
