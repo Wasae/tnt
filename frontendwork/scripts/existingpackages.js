@@ -59,8 +59,21 @@
         }
 
         function deletePackage() {
-            debugger;
-            console.log(event)
+            let target=event.target
+            if(target.hasAttribute("data-pkgid")){
+                let pkgid=target.attributes["data-pkgid"].value
+                let a=confirm("do you want to delete this package .. ?")
+                if(a){
+                //ajax for delete
+                //LoadInitials.makeGETajax()
+                //.then(LoadInitials.getJSON)
+                //.json(DeletePacakage)
+                }
+            }
+        }
+
+        function DeletePacakage() {
+            getPrePackages()()
         }
 
         function PacakgeEventBinders(params) {
