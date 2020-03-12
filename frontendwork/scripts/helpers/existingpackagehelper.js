@@ -46,8 +46,8 @@ let existingPackageHelper=(function() {
                 rowhtml+=dataprops.map(function(a){
                             return tabletagsHelper.openingTD+d[a]+tabletagsHelper.closingTD
                          }).join('')   
-                rowhtml+=tabletagsHelper.openingTD+"<button class='tbleditbtn'>Edit</button>"+tabletagsHelper.closingTD
-                rowhtml+=tabletagsHelper.openingTD+"<button class='tbldeletebtn'>Delete</button>"+tabletagsHelper.closingTD
+                rowhtml+=tabletagsHelper.openingTD+"<button class='tbleditbtn' data-pkgid='"+d[dataprops[0]]+"'>Edit</button>"+tabletagsHelper.closingTD
+                rowhtml+=tabletagsHelper.openingTD+"<button class='tbldeletebtn' data-pkgid='"+d[dataprops[0]]+"'>Delete</button>"+tabletagsHelper.closingTD
                 return rowhtml+=tabletagsHelper.closingTR
             }).join('')
         }
