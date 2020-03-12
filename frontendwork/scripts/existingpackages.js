@@ -73,7 +73,7 @@
         }
 
         function DeletePacakage() {
-            getPrePackages()()
+            getPrePackages()
         }
 
         function PacakgeEventBinders(params) {
