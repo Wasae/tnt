@@ -4,16 +4,22 @@ const packageGenerator=(
             return packageFormer(params)
         }
 
-        function packageFormer(params) {            
-            let pkgid=params && params.PackageId?params.PackageId: create_UUID()
+       function packageFormer(params) {            
+            let pkgid=params && params.PackageId?params.PackageId: create_UUID(),
+            title=params && params.title?params.title:undefined,
+            price=params && params.price?params.price:undefined,
+            inclusion=params && params.inclusion?params.inclusion:undefined,
+            accomodation=params && params.accomodations?params.accomodations:undefined,
+            daydesc=params && params.daydescription?params.daydescription:undefined
+
             let packageHTML="<fieldset id='"+pkgid+"'>"        
             packageHTML+="<table><tbody>"
             packageHTML+="<tr><td>Display Image : </td><td>"+getFileUploadControl(pkgid)+"</td></tr>"
-            packageHTML+="<tr><td>Title : </td><td>"+getPackageTitleControls(pkgid,params.title)+"</td></tr>"
-            packageHTML+="<tr><td>Price : </td><td>"+getPackagePriceControls(pkgid,params.price)+"</td></tr>"
-            packageHTML+="<tr><td>Inclusions : </td><td><fieldset><div id='pkginclusion_"+pkgid+"'>"+getPackageInclusionControls(params.inclusion)+"</div><button class='addinclusion'>+</button></fieldset></td></tr>"
-            packageHTML+="<tr><td>Accomodations : </td><td><fieldset><div id='pkgaccomodations_"+pkgid+"'>"+getAccomodationControls(params.accomodations)+"</div><button class='addaccomodation'>+</button></fieldset></td></tr>"
-            packageHTML+="<tr><td>Daywise Description : </td><td><fieldset><div id='pkgdaywisedescription_"+pkgid+"'>"+getPackageDayWiseDescriptionControls(params.daydescription)+"</div><button class='addday'>+</button></fieldset></td></tr>"
+            packageHTML+="<tr><td>Title : </td><td>"+getPackageTitleControls(pkgid,title)+"</td></tr>"
+            packageHTML+="<tr><td>Price : </td><td>"+getPackagePriceControls(pkgid,price)+"</td></tr>"
+            packageHTML+="<tr><td>Inclusions : </td><td><fieldset><div id='pkginclusion_"+pkgid+"'>"+getPackageInclusionControls(inclusion)+"</div><button class='addinclusion'>+</button></fieldset></td></tr>"
+            packageHTML+="<tr><td>Accomodations : </td><td><fieldset><div id='pkgaccomodations_"+pkgid+"'>"+getAccomodationControls(accomodation)+"</div><button class='addaccomodation'>+</button></fieldset></td></tr>"
+            packageHTML+="<tr><td>Daywise Description : </td><td><fieldset><div id='pkgdaywisedescription_"+pkgid+"'>"+getPackageDayWiseDescriptionControls(daydesc)+"</div><button class='addday'>+</button></fieldset></td></tr>"
             packageHTML+="</tbody></table>"
             //packageHTML+="<button class='removePackage'>Remove</button>"
             packageHTML+="</fieldset>"
