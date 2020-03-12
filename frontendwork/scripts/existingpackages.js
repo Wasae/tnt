@@ -1,4 +1,4 @@
-const LoadInitialPackages=(
+ const LoadInitialPackages=(
     function(){
         let deps=LoadInitials
         let DesiredDOMReference
@@ -26,6 +26,48 @@ const LoadInitialPackages=(
             handlePreLoadedPackaged(d)
         }
 
+        function BindGeneratedTableEvents() {
+            let tableClassEvents=[
+                {
+                    classname:"tbleditbtn",
+                    eventtype:"click",
+                    event:editPackage
+                },
+                {
+                    classname:"tbldeletebtn",
+                    eventtype:"click",
+                    event:deletePackage
+                }
+            ]            
+            for (let j = 0; j < tableClassEvents.length; j++) {                
+                PacakgeEventBinders(tableClassEvents[j])
+            }            
+        }
+
+        function editPackage() {
+            debugger;
+            let target=event.target
+            if(target.hasAttribute("data-pkgid")){
+                let pkgid=target.attributes["data-pkgid"].value
+                //getPackageForThisId
+
+            }
+            console.log(event)
+        }
+
+        function deletePackage() {
+            debugger;
+            console.log(event)
+        }
+
+        function PacakgeEventBinders(params) {
+            let btns= document.getElementsByClassName(params.classname)
+            if(btns && btns.length!=0){
+                for (let ii = 0; ii < btns.length; ii++) {
+                    btns[ii].addEventListener(params.eventtype,params.event)
+                }
+            }
+        }
         function handlePreLoadedPackaged(d) {
             // dirt here
             DesiredDOMReference.existingpackages.style.display=""
@@ -37,12 +79,13 @@ const LoadInitialPackages=(
             let columns=["#","Title","Price","Edit","Delete"]
             let dataprops=["srno","title","price"]  
             if (d && d.length!=0) {
-                html=existingPackageHelper.init(d,columns,dataprops)   
+                html=existingPackageHelper.init(d,columns,dataprops)  
+                DesiredDOMReference.existingpackages.innerHTML=html 
+                BindGeneratedTableEvents()
             }
             else{
-                html="No Packages Found"
-            }
-            DesiredDOMReference.existingpackages.innerHTML=html
+                DesiredDOMReference.existingpackages.innerHTML="No Packages Found"
+            }            
         }
 
         return {
