@@ -166,8 +166,7 @@ const AddPackageModule=(
                      totaldays:daydescription.length,
                      daydescription:daydescription
                  })                                   
-            }
-            console.log(finalobject)
+            }            
             return finalobject
         }
 
