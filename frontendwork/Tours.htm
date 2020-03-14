@@ -808,15 +808,16 @@ let pacakgeGenerator=(function(){
       return daydescriptionHTML
     }
 
-    function formImageHTML(imgs) {
-        let imgHTML=""
-        if(imgs && imgs.length!=0){
-            imgHTML+=imgs.map((d)=>{
-                return "<div style='height: 450px;'></div><img src='images/tours/manali62.jpg' alt='Image' class='img-fluid rounded' />"
-            })
-        }
-        return imgHTML
-    }
+    function formImageHTML(imgs) {	
+        let imgHTML=""	
+        if(imgs && imgs.length!=0){	
+            imgHTML+=imgs.map((d)=>{	
+                return "<div style='height: 450px;'></div><img src='"+d+"' alt='Image' class='img-fluid rounded' />"	
+            })	
+        }	
+        return imgHTML	
+    }	
+
 
     function PackageHTML(package) {
         let packageHTML=""
@@ -826,7 +827,7 @@ let pacakgeGenerator=(function(){
         packageHTML+="<div class='col-md-4 mb-5 mb-md-0'>"
         //packageHTML+="<img src='images/tours/manali61.jpg' alt='Image' class='img-fluid rounded'>"//will have to change image
         packageHTML+="<div id='tripImages6' style='display: none;'>"        
-        packageHTML+=formImageHTML()
+		packageHTML+=formImageHTML(package.files)
         packageHTML+="</div>"
         packageHTML+="</div>"
         packageHTML+="<div class='col-md-6 pl-md-5'>"

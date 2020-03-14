@@ -37,7 +37,7 @@
             }            
         }
 
-        function editPackage() {                   
+        function editPackage() {            
             let target=event.target
             if(target.hasAttribute("data-pkgid")){                
                 let pkgid=target.attributes["data-pkgid"].value
@@ -50,8 +50,7 @@
         }
      
         function EditPackage(d) {            
-            if (d.resultstatus) {
-                alert("Package Modified Successfully")
+            if (d.resultstatus) {                
                 AddPackageModule.addPackage(d.result)   
                 return
             }            

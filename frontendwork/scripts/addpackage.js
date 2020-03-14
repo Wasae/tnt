@@ -1,5 +1,8 @@
 const AddPackageModule=(
     function(){    
+		let filesArray=[]	
+        let dynamicFileUploadControl;
+		
         let deps=packageGenerator
         let  DesiredDOMReference={}
         let urls={
@@ -14,6 +17,31 @@ const AddPackageModule=(
                 btnBack:dom.btnBack,
                 btnsavepackage:btnsavepackage
             }
+        }
+		
+		 function getFileUploadControl() {            	
+            dynamicFileUploadControl=document.getElementsByClassName('fileuploadcontrol')[0]	
+            if(dynamicFileUploadControl){	
+                dynamicFileUploadControl.addEventListener('change',ToBase64)	
+            }	
+        }
+		
+		function ToBase64() {            
+            let target=event.target            	
+            if (target) {	
+                let files=target.files	
+                if(files && files.length!=0){	
+                    for (let j = 0; j < files.length; j++) {	
+                        const element = files[j];	
+                        let reader=new FileReader()	
+                        reader.onload=()=>{	
+                            filesArray.push(reader.result)	
+                        }	
+                        reader.readAsDataURL(element)    	
+                    }                    	
+                }	
+                	
+            }	
         }
 
         function BackClicked() {
@@ -41,6 +69,7 @@ const AddPackageModule=(
                 
             }
             SavingButtonCriteria()            
+			getFileUploadControl()
         }
 
         function newPackagehtmlgenerator(d){            
@@ -91,9 +120,7 @@ const AddPackageModule=(
             for (let i = 0; i < packages.length; i++) {
                 const element = packages[i];
                 let pkgid=element.attributes["id"].value                    
-                
-                // pkgfileupload_
-
+                                
                 var title=document.getElementById("pkgtitle_"+pkgid).value; 
                 var price=document.getElementById("pkgprice_"+pkgid).value;                     
                 
@@ -127,8 +154,10 @@ const AddPackageModule=(
                     daydescription=[]
                 }   
                 
+                // pkgfileupload_
+				var files=filesArray
                 finalobject.push({
-                     //image remaining
+                     files:files,
                      packageid:pkgid,
                      title:title,
                      price:price,

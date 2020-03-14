@@ -28,9 +28,9 @@ const packageGenerator=(
 
         function getFileUploadControl(params,val) {
             if (val) {
-                return "<input type='file' id='pkgfileupload_"+params+"' value='"+val+"'/>"
+                return "<input type='file' multiple id='pkgfileupload_"+params+"' class='fileuploadcontrol' value='"+val+"'/>"
             } 
-            return "<input type='file' id='pkgfileupload_"+params+"'/>"                       
+            return "<input type='file' multiple id='pkgfileupload_"+params+"' class='fileuploadcontrol'/>"                       
         }
 
         function getPackageTitleControls(params,val) {
