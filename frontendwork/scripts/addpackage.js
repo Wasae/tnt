@@ -1,6 +1,7 @@
 const AddPackageModule=(
     function(){    
-		let filesArray=[]	
+        let filesArray=[]
+        let displayfile
         let dynamicFileUploadControl;
 		
         let deps=packageGenerator
@@ -20,12 +21,34 @@ const AddPackageModule=(
         }
 		
 		 function getFileUploadControl() {            	
-            dynamicFileUploadControl=document.getElementsByClassName('fileuploadcontrol')[0]	
+            dynamicFileUploadControl=document.getElementsByClassName('fileuploadcontrol')[0]	            
             if(dynamicFileUploadControl){	
                 dynamicFileUploadControl.addEventListener('change',ToBase64)	
             }	
+            dynamicFileUploadControl=document.getElementsByClassName('displayimagecontrol')[0]
+            if (dynamicFileUploadControl) {
+                dynamicFileUploadControl.addEventListener('change',ToBase64Image)
+            }
         }
-		
+
+        
+		function ToBase64Image() {            
+            let target=event.target            	
+            if (target) {	
+                let files=target.files	
+                if(files && files.length!=0){	
+                    for (let j = 0; j < files.length; j++) {	
+                        const element = files[j];	
+                        let reader=new FileReader()	
+                        reader.onload=()=>{	
+                            displayfile=reader.result	
+                        }	
+                        reader.readAsDataURL(element)    	
+                    }                    	
+                }	
+                	
+            }	
+        }		
 		function ToBase64() {            
             let target=event.target            	
             if (target) {	
@@ -155,8 +178,10 @@ const AddPackageModule=(
                 }   
                 
                 // pkgfileupload_
-				var files=filesArray
+                var files=filesArray
+                let displayImage=displayfile
                 finalobject.push({
+                    displayImage:displayImage,
                      files:files,
                      packageid:pkgid,
                      title:title,

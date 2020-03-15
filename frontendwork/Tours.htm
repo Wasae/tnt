@@ -825,9 +825,12 @@ let pacakgeGenerator=(function(){
         packageHTML+="<div class='container'>"
         packageHTML+="<div class='row align-items-center'>"
         packageHTML+="<div class='col-md-4 mb-5 mb-md-0'>"
-        //packageHTML+="<img src='images/tours/manali61.jpg' alt='Image' class='img-fluid rounded'>"//will have to change image
-        packageHTML+="<div id='tripImages6' style='display: none;'>"        
-		packageHTML+=formImageHTML(package.files)
+          if(package.displayImage)
+          {
+            packageHTML+="<img src='"+package.displayImage+"' alt='Image' class='img-fluid rounded'>"
+          }        
+        packageHTML+="<div id='tripImages6' style='display: none;'>"
+		    packageHTML+=formImageHTML(package.files)
         packageHTML+="</div>"
         packageHTML+="</div>"
         packageHTML+="<div class='col-md-6 pl-md-5'>"
@@ -912,7 +915,6 @@ let renderPackages=(function(){
         data=data.result
         if(data && data.length!=0){
           let html=pacakgeGenerator.getHTMLforPackages(data)          
-          debugger;
           DOMReference.pacakageRenderer.innerHTML+=html
           bindDOMEvents()
         }

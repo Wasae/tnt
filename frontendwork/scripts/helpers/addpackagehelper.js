@@ -14,7 +14,8 @@ const packageGenerator=(
 
             let packageHTML="<fieldset id='"+pkgid+"'>"        
             packageHTML+="<table><tbody>"
-            packageHTML+="<tr><td>Display Image : </td><td>"+getFileUploadControl(pkgid)+"</td></tr>"
+            packageHTML+="<tr><td>Display Image : </td><td>"+getImageControl(pkgid)+"</td></tr>"
+            packageHTML+="<tr><td>Image Listings : </td><td>"+getFileUploadControl(pkgid)+"</td></tr>"
             packageHTML+="<tr><td>Title : </td><td>"+getPackageTitleControls(pkgid,title)+"</td></tr>"
             packageHTML+="<tr><td>Price : </td><td>"+getPackagePriceControls(pkgid,price)+"</td></tr>"
             packageHTML+="<tr><td>Inclusions : </td><td><fieldset><div id='pkginclusion_"+pkgid+"'>"+getPackageInclusionControls(inclusion)+"</div><button class='addinclusion'>+</button></fieldset></td></tr>"
@@ -30,7 +31,7 @@ const packageGenerator=(
             if (val) {
                 return "<input type='file' multiple id='pkgfileupload_"+params+"' class='fileuploadcontrol' value='"+val+"'/>"
             } 
-            return "<input type='file' multiple id='pkgfileupload_"+params+"' class='fileuploadcontrol'/>"                       
+            return "<input type='file' multiple id='pkgfileupload_"+params+"' class='fileuploadcontrol'/>"
         }
 
         function getPackageTitleControls(params,val) {
@@ -78,6 +79,10 @@ const packageGenerator=(
                 return html
             }
             return "<div><textarea placeholder='Day Description'></textarea><button class='removeinc'>-</button></div>"
+        }
+
+        function getImageControl(params) {
+            return "<input type='file' multiple id='pkgfileupload_"+params+"' class='displayimagecontrol'/>"
         }
 
         return{
