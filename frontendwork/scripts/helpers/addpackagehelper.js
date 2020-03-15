@@ -82,7 +82,7 @@ const packageGenerator=(
         }
 
         function getImageControl(params) {
-            return "<input type='file' multiple id='pkgfileupload_"+params+"' class='displayimagecontrol'/>"
+            return "<input type='file' id='pkgfileupload_"+params+"' class='displayimagecontrol'/>"
         }
 
         return{

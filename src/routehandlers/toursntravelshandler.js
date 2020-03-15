@@ -32,6 +32,12 @@ const postAllToursInfo=(req,res)=>{
             if(finder){
                 let ix=data.indexOf(finder)
                 if(ix!=-1){
+                    if (!body.files) {
+                        body.files=data[ix]
+                    }
+                    if (body.displayImage) {
+                        body=data[ix]=displayImage
+                    }
                     data[ix]=body
                 }
             }
