@@ -21,7 +21,13 @@ const postAllToursInfo=(req,res)=>{
         if(req.body && req.body.length!=0){
             let body=req.body[0]
             let data=fs.readFileSync(filepath).toString('utf8')
-            data=JSON.parse(data) || []
+            if(data){
+                data=JSON.parse(data) || []
+            }
+            else{
+                data=[]
+            }
+            
             let finder=data.find((x)=>x.packageid == body.packageid)
             if(finder){
                 let ix=data.indexOf(finder)
